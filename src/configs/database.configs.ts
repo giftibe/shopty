@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import {MESSAGES} from './configs.constant'
+import { MESSAGES } from './constant.configs'
 
 function database() {
     mongoose
