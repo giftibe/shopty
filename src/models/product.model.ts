@@ -38,6 +38,12 @@ const productSchema = new Schema({
         lowercase: true
     },
 
+    reviews: {
+        type: String,
+        minlength: 5,
+        maxlength: 200
+    }
+
 })
 
 const Product = model('product', productSchema)
