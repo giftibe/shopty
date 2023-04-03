@@ -1,4 +1,10 @@
 const PORT = process.env.PORT || 4000;
+
+const ENUM = {
+    ADMIN: 'admin',
+    SELLER: 'seller',
+    BUYER: 'buyer',
+}
 const MESSAGES = {
     DATABASE: {
         CONNECTED: "MongoDB is connected :)",
@@ -6,4 +12,4 @@ const MESSAGES = {
     }
 }
 
-export { PORT, MESSAGES }
+export { PORT, ENUM, MESSAGES }
