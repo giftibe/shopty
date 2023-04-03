@@ -42,7 +42,12 @@ const productSchema = new Schema({
         type: String,
         minlength: 5,
         maxlength: 200
-    }
+    }, 
+
+    isDeleted: {
+        type: Boolean,
+        default: false
+    },
 
 })
 
