@@ -1,7 +1,7 @@
 import User from '../models/user.models';
 import IUser from '../interfaces/user.interfaces';
 
-class UserServices {
+export default class UserServices {
     //create account
     async createAccount(user: Partial<IUser>) {
         const _user = await User.create(user);
@@ -31,5 +31,3 @@ class UserServices {
     }
 
 }
-
-export default UserServices
