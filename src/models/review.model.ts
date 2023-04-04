@@ -11,10 +11,11 @@ const reviewSchema = new Schema({
         product: {
             order: Schema.Types.ObjectId,
             ref: 'Product'
-        }
+        },
+        isDeleted: Boolean,
+        default: false
     }]
-
-})
+}, { timestamps: true })
 
 const Review = model('review', reviewSchema)
 export default Review
