@@ -5,7 +5,13 @@ const productSchema = new Schema({
         type: String,
         trim: true,
         maxLength: 20,
-        minlength: 2
+        minlength: 2,
+        required: true
+    },
+
+    seller: {
+        identity: Schema.Types.ObjectId,
+        ref: 'User',
     },
 
     quantity: {
@@ -17,7 +23,7 @@ const productSchema = new Schema({
     images: {
         type: String,
         // required:true,
-        content: []
+        content: [""]
     },
 
     description: {
@@ -33,16 +39,14 @@ const productSchema = new Schema({
     },
 
     category: {
-        type: String,
-        required: true,
-        lowercase: true
+        type: Schema.Types.ObjectId,
+        ref: 'Category',
+        required: true
     },
 
     reviews: {
-        type: String,
-        minlength: 5,
-        maxlength: 200
-    }, 
+        ref: 'Review'
+    },
 
     isDeleted: {
         type: Boolean,
