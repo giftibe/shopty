@@ -2,7 +2,7 @@ import IProduct from "../interfaces/product.interface";
 import Product from "../models/product.model";
 
 
-class productService {
+export default class productService {
     //create a product
     async createProduct(data: Partial<IProduct>) {
         return await Product.create(data)
@@ -38,4 +38,3 @@ class productService {
     }
 }
 
-export default productService
