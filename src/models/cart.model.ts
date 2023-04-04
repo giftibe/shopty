@@ -26,8 +26,6 @@ const cartSchema = new Schema({
         type: Boolean,
         default: false
     }
-
-
 })
 
 const Cart = model('cart', cartSchema)
