@@ -8,10 +8,18 @@ export default class UserServices {
         return await User.findOne(_user.id, { _id: 1, password: 0 });
     }
 
-    //find a useremail for admins
+    //find a useremail
     async findEmail(email: string) {
         return await User.findOne(
             { email: email, isDeleted: false },
+            { _id: 1, password: 0 }
+        );
+    }
+
+    //find a userName
+    async findUserName(userName: string) {
+        return await User.findOne(
+            { userName: userName, isDeleted: false },
             { _id: 1, password: 0 }
         );
     }
