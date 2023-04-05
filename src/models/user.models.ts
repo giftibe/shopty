@@ -1,5 +1,9 @@
 import { Schema, model } from 'mongoose';
+import passLocalMongoose from "passport-local-mongoose";
 import { ENUM } from '../configs/constant.configs'
+import passport from 'passport';
+import passportLocal from 'passport-local'
+const LocalStrategy = passportLocal.Strategy;
 
 
 const userSchema = new Schema({
@@ -57,5 +61,12 @@ const userSchema = new Schema({
 
 }, { timestamps: true })
 
+userSchema.plugin(passLocalMongoose)
 const User = model('user', userSchema);
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+
+
 export default User
