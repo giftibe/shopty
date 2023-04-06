@@ -3,25 +3,24 @@ import IUser from '../interfaces/user.interfaces';
 
 export default class UserServices {
     //create account
-    async createAccount(user: Partial<IUser>) {
-        const _user = await User.create(user);
-        return await User.findOne(_user.id, { _id: 1, password: 0 });
+    async registerUser(data: Partial<IUser>) {
+        return await User.create(data);
     }
 
     //find a useremail
     async findEmail(email: string) {
         return await User.findOne(
             { email: email, isDeleted: false },
-            { _id: 1, password: 0 }
         );
     }
 
     //find a userName
     async findUserName(userName: string) {
-        return await User.findOne(
+        const __username = await User.findOne(
             { userName: userName, isDeleted: false },
-            { _id: 1, password: 0 }
         );
+        return __username
+
     }
 
     //update a username for users

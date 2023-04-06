@@ -1,10 +1,8 @@
 import { Schema, model } from 'mongoose';
-import passLocalMongoose from "passport-local-mongoose";
 import { ENUM } from '../configs/constant.configs'
-import passport from 'passport';
-import passportLocal from 'passport-local'
-const LocalStrategy = passportLocal.Strategy;
-
+import UserModel from '../interfaces/user.interfaces';
+import IUser from '../interfaces/user.interfaces';
+import passportLocalMongoose from 'passport-local-mongoose'
 
 const userSchema = new Schema({
     email: {
@@ -18,23 +16,20 @@ const userSchema = new Schema({
         type: String,
         required: true,
         unique: true,
+        upperCase: true,
         trim: true,
-        maxlength: 15,
-        minlenght: 4
     },
 
     fullName: {
         type: String,
-        minlength: 4,
         trim: true,
         required: true,
     },
 
     password: {
         type: String,
-        required: true,
+        // required: true,
         trim: true,
-        minlength: 4,
     },
 
     role: {
@@ -61,11 +56,10 @@ const userSchema = new Schema({
 
 }, { timestamps: true })
 
-userSchema.plugin(passLocalMongoose)
-const User = model('user', userSchema);
-passport.use(new LocalStrategy(User.authenticate()));
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+
+userSchema.plugin(passportLocalMongoose);
+const User = model<IUser, UserModel>('user', userSchema);
+
 
 
 
