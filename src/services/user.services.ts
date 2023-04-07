@@ -15,9 +15,9 @@ export default class UserServices {
     }
 
     //find a userName
-    async findUserName(userName: string) {
+    async findUserName(username: string) {
         const __username = await User.findOne(
-            { userName: userName, isDeleted: false },
+            { username: username, isDeleted: false },
         );
         return __username
 
