@@ -3,6 +3,7 @@ import UserServices from "../services/user.services";
 import bcrypt from 'bcrypt'
 const ROUNDS = +process.env.SALT_ROUNDS!
 import encrypt from "../utils/hash.utils";
+
 import { MESSAGES } from "../configs/constant.configs";
 import generateRandomAvatar from '../utils/avatar'
 const { registerUser, findEmail, updateUser, deleteUser, findUserName } = new UserServices();
@@ -98,7 +99,6 @@ class userControllers {
                 message: MESSAGES.USER.LOGIN
             })
 
-
         } catch (error) {
             return res.status(500).send({
                 success: false,
@@ -106,36 +106,6 @@ class userControllers {
             })
         }
     }
-
-    async updateAccount(req: Request, res: Response) {
-        try {
-            const data = req.body
-            let account
-
-            /*check if logged in user is an admin or their email matches
-            the logged in email */
-            // const _user = await findEmail(account)
-
-            // const update = await updateUser()
-
-
-
-        } catch (error) {
-            return res.status(500).send({
-                success: false,
-                message: MESSAGES.USER.ERROR + error
-            })
-
-        }
-
-
-    }
-
-
-
-
 }
-
-
 
 export default new userControllers()
