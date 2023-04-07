@@ -16,7 +16,9 @@ const MESSAGES = {
         ERROR: "An error occured",
         DUPLICATE_EMAIL:"Email already exists",
         DUPLICATE_USERNAME: "Username already exists",
-        REGISTERED: "Registration successful"
+        REGISTERED: "Registration successful",
+        EMAIL_NOTFOUND: 'Email not found',
+        LOGGEDIN:'Logged in successfully'
 
     }
 }

@@ -1,8 +1,5 @@
 import { Schema, model } from 'mongoose';
 import { ENUM } from '../configs/constant.configs'
-import UserModel from '../interfaces/user.interfaces';
-import IUser from '../interfaces/user.interfaces';
-import passportLocalMongoose from 'passport-local-mongoose'
 
 const userSchema = new Schema({
     email: {
@@ -57,6 +54,5 @@ const userSchema = new Schema({
 }, { timestamps: true })
 
 
-// userSchema.plugin(passportLocalMongoose);
 const User = model('user', userSchema);
 export default User
