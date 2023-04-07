@@ -45,7 +45,7 @@ class userControllers {
         } catch (error) {
             return res.status(500).send({
                 success: false,
-                message: MESSAGES.USER.ERROR + " here is it " + error
+                message: MESSAGES.USER.ERROR + error
             })
         }
     }
