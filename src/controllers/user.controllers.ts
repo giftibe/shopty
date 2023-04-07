@@ -2,8 +2,6 @@ import { Request, Response } from "express";
 import UserServices from "../services/user.services";
 import bcrypt from 'bcrypt'
 const ROUNDS = +process.env.SALT_ROUNDS!
-import encrypt from "../utils/hash.utils";
-
 import { MESSAGES } from "../configs/constant.configs";
 import generateRandomAvatar from '../utils/avatar'
 const { registerUser, findEmail, updateUser, deleteUser, findUserName } = new UserServices();
@@ -82,21 +80,9 @@ class userControllers {
                 })
             }
 
-            // //check if passwords match
-            // if (emailCheck.password == req.body.password) {
-            //     //compare hashed password here then:
-            //     return res.status(403).send({
-            //         success: false,
-            //         message: MESSAGES.USER.PASSWORD_NOTFOUND
-            //     })
-            // }
-
-            //Login in the user
-            //create cookie here then login
-
             return res.status(200).send({
                 success: true,
-                message: MESSAGES.USER.LOGIN
+                message: MESSAGES.USER.LOGGEDIN
             })
 
         } catch (error) {
