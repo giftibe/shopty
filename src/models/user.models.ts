@@ -12,7 +12,7 @@ const userSchema = new Schema({
         trim: true,
     },
 
-    userName: {
+    username: {
         type: String,
         required: true,
         unique: true,
@@ -20,7 +20,7 @@ const userSchema = new Schema({
         trim: true,
     },
 
-    fullName: {
+    fullname: {
         type: String,
         trim: true,
         required: true,
@@ -28,7 +28,7 @@ const userSchema = new Schema({
 
     password: {
         type: String,
-        // required: true,
+        required: true,
         trim: true,
     },
 
@@ -57,10 +57,6 @@ const userSchema = new Schema({
 }, { timestamps: true })
 
 
-userSchema.plugin(passportLocalMongoose);
-const User = model<IUser, UserModel>('user', userSchema);
-
-
-
-
+// userSchema.plugin(passportLocalMongoose);
+const User = model('user', userSchema);
 export default User

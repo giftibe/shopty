@@ -1,15 +1,16 @@
 import { Request, Response } from "express";
 import UserServices from "../services/user.services";
+import bcrypt from 'bcrypt'
 const ROUNDS = +process.env.SALT_ROUNDS!
 import encrypt from "../utils/hash.utils";
 import { MESSAGES } from "../configs/constant.configs";
+import generateRandomAvatar from '../utils/avatar'
 const { registerUser, findEmail, updateUser, deleteUser, findUserName } = new UserServices();
 
 
 class userControllers {
     async registerUser(req: Request, res: Response) {
         try {
-            const { password } = req.body
             //find if email exists
             const getEmail = await findEmail(req.body.email)
             if (getEmail) {
@@ -21,7 +22,7 @@ class userControllers {
             }
 
             //check if userName exist
-            const getUserName = await findUserName(req.body.userName)
+            const getUserName = await findUserName(req.body.username)
             if (getUserName) {
                 return res.status(409).send(
                     {
@@ -29,19 +30,38 @@ class userControllers {
                         message: MESSAGES.USER.DUPLICATE_USERNAME
                     })
             }
+            //
+            const salt = await bcrypt.genSalt(ROUNDS);
+            const hashedPassword = await bcrypt.hash(
+                req.body.password,
+                salt
+            );
 
-            //Register a user 
+            const avatar = generateRandomAvatar(req.body.email);
+            let strAvatar = (await avatar).toString();
+            let _imageTag = `<img src="${strAvatar}" alt="A representation of the user as an avatar using the email.">`;
 
-            const data = await encrypt(req.body.password, ROUNDS)
+
             await registerUser({
-                password: data,
-                ...req.body
+                email: req.body.email,
+                username: req.body.username,
+                fullname: req.body.fullname,
+                password: hashedPassword,
+                avatarURL: strAvatar,
+                imageTag: _imageTag,
             })
 
-            res.status(201).send({
+            return res.status(200).send({
+                message: MESSAGES.USER.CREATED,
                 success: true,
-                message: MESSAGES.USER.CREATED
-            })
+                result: {
+                    email: req.body.email,
+                    username: req.body.username,
+                    fullname: req.body.fullname,
+                    avatarURL: strAvatar,
+                    imageTag: _imageTag,
+                }
+            });
         } catch (error) {
             return res.status(500).send({
                 success: false,
@@ -61,14 +81,14 @@ class userControllers {
                 })
             }
 
-            //check if passwords match
-            if (emailCheck.password == req.body.password) {
-                //compare hashed password here then:
-                return res.status(403).send({
-                    success: false,
-                    message: MESSAGES.USER.PASSWORD_NOTFOUND
-                })
-            }
+            // //check if passwords match
+            // if (emailCheck.password == req.body.password) {
+            //     //compare hashed password here then:
+            //     return res.status(403).send({
+            //         success: false,
+            //         message: MESSAGES.USER.PASSWORD_NOTFOUND
+            //     })
+            // }
 
             //Login in the user
             //create cookie here then login
