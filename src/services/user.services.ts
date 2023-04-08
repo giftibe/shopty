@@ -10,7 +10,7 @@ export default class UserServices {
     //find a useremail
     async findEmail(email: string) {
         return await User.findOne(
-            { email: email, isDeleted: false },
+            { email, isDeleted: false },
         );
     }
 

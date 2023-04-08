@@ -1,10 +1,6 @@
 import express from 'express';
-import session from "express-session";
-import passport from 'passport';
-
 import dotenv from 'dotenv';
 dotenv.config();
-
 import cors from 'cors';
 import { PORT } from './configs/constant.configs';
 import database from './configs/database.configs';

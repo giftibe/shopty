@@ -1,9 +1,11 @@
 import { Request, Response } from "express";
 import UserServices from "../services/user.services";
+import User from '../models/user.models'
 import bcrypt from 'bcrypt'
 const ROUNDS = +process.env.SALT_ROUNDS!
 import { MESSAGES } from "../configs/constant.configs";
 import generateRandomAvatar from '../utils/avatar'
+import IUser from "../interfaces/user.interfaces";
 const { registerUser, findEmail, updateUser, deleteUser, findUserName } = new UserServices();
 
 
@@ -64,7 +66,7 @@ class userControllers {
         } catch (error) {
             return res.status(500).send({
                 success: false,
-                message: MESSAGES.USER.ERROR + " here is it " + error
+                message: MESSAGES.USER.ERROR + error
             })
         }
     }
@@ -72,14 +74,25 @@ class userControllers {
     async loginUser(req: Request, res: Response) {
         try {
             //check if email exist
-            const emailCheck = await findEmail(req.params.email)
-            if (!emailCheck) {
+            const { email } = req.body
+            const { password } = req.body
+            const user = await findEmail(email)
+            const _user = user as Partial<IUser>
+
+            if (!user || null) {
                 return res.status(403).send({
                     success: false,
                     message: MESSAGES.USER.EMAIL_NOTFOUND
                 })
             }
 
+            const match_Password = await bcrypt.compare(password, _user.password!)
+            if (!match_Password) {
+                return res.status(403).send({
+                    succcess: true,
+                    message: MESSAGES.USER.W_PASSWORD
+                })
+            }
             return res.status(200).send({
                 success: true,
                 message: MESSAGES.USER.LOGGEDIN
@@ -92,6 +105,9 @@ class userControllers {
             })
         }
     }
+
+
+
 }
 
 export default new userControllers()
