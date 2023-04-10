@@ -4,7 +4,13 @@ import passport from "../middlewares/passport.middleware";
 import { MESSAGES } from "../configs/constant.configs";
 import generateRandomAvatar from '../utils/avatar'
 import IUser from "../interfaces/user.interfaces";
-const { registerUser, findEmail, updateUser, deleteUser, findUserName } = new UserServices();
+const {
+    registerUser,
+    findEmail,
+    updateUser,
+    deleteUser,
+    findUserName
+} = new UserServices();
 
 
 class userControllers {
@@ -53,36 +59,34 @@ class userControllers {
 
     async loginUser(req: Request, res: Response, next: NextFunction) {
         try {
-            const { email, username } = req.body
+            const { username } = req.body
 
-
-            //check if email exist
+            //check if username  exist
             const user = await findUserName(username)
-            const _user = user as Partial<IUser>
-            console.log(user);
-
             if (!user || null) {
                 return res.status(403).send({
                     success: false,
-                    message: 'not found'
+                    message: MESSAGES.USER.ACCOUNT_NOT_REGISTERED
                 })
             }
 
             passport.authenticate('local', (err: any, user: any) => {
-                console.log(user);
                 if (!user) return res.status(401).send({
-                    message: 'username or password is incorrect'
+                    success: false,
+                    message: MESSAGES.USER.INCORRECT_DETAILS
                 })
 
                 req.login(user, (err) => {
-                    if (err) throw err
+                    if (err) {
+                        throw err
+                    }
                     res.status(201).send({
                         success: true,
                         message: MESSAGES.USER.LOGGEDIN,
                         user
                     })
                 })
-            })(req, res, next())
+            })(req, res, next)
 
         } catch (error) {
             return res.status(500).send({

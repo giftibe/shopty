@@ -5,8 +5,6 @@ declare global {
             SESSION_KEY: string;
             NODE_ENV: 'development' | 'production'
             secret: string;
-            // usernameField: string;
-            // passwordField: string;
         }
 
     }
