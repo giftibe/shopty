@@ -1,8 +1,6 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import UserServices from "../services/user.services";
-import User from '../models/user.models'
-import bcrypt from 'bcrypt'
-const ROUNDS = +process.env.SALT_ROUNDS!
+import passport from "../middlewares/passport.middleware";
 import { MESSAGES } from "../configs/constant.configs";
 import generateRandomAvatar from '../utils/avatar'
 import IUser from "../interfaces/user.interfaces";
@@ -31,39 +29,21 @@ class userControllers {
                         message: MESSAGES.USER.DUPLICATE_USERNAME
                     })
             }
-            //
-            const salt = await bcrypt.genSalt(ROUNDS);
-            const hashedPassword = await bcrypt.hash(
-                req.body.password,
-                salt
-            );
 
             const avatar = generateRandomAvatar(req.body.email);
             let strAvatar = (await avatar).toString();
             let _imageTag = `<img src="${strAvatar}" alt="A representation of the user as an avatar using the email.">`;
 
 
-            await registerUser({
-                email: req.body.email,
-                username: req.body.username,
-                fullname: req.body.fullname,
-                password: hashedPassword,
-                avatarURL: strAvatar,
-                imageTag: _imageTag,
+            const newUser = await registerUser(req.body)
+            return res.status(200).send({
+                success: true,
+                message: MESSAGES.USER.CREATED,
+                newUser
             })
 
-            return res.status(200).send({
-                message: MESSAGES.USER.CREATED,
-                success: true,
-                result: {
-                    email: req.body.email,
-                    username: req.body.username,
-                    fullname: req.body.fullname,
-                    avatarURL: strAvatar,
-                    imageTag: _imageTag,
-                }
-            });
-        } catch (error) {
+        }
+        catch (error) {
             return res.status(500).send({
                 success: false,
                 message: MESSAGES.USER.ERROR + error
@@ -71,32 +51,38 @@ class userControllers {
         }
     }
 
-    async loginUser(req: Request, res: Response) {
+    async loginUser(req: Request, res: Response, next: NextFunction) {
         try {
+            const { email, username } = req.body
+
+
             //check if email exist
-            const { email } = req.body
-            const { password } = req.body
-            const user = await findEmail(email)
+            const user = await findUserName(username)
             const _user = user as Partial<IUser>
+            console.log(user);
 
             if (!user || null) {
                 return res.status(403).send({
                     success: false,
-                    message: MESSAGES.USER.EMAIL_NOTFOUND
+                    message: 'not found'
                 })
             }
 
-            const match_Password = await bcrypt.compare(password, _user.password!)
-            if (!match_Password) {
-                return res.status(403).send({
-                    succcess: true,
-                    message: MESSAGES.USER.W_PASSWORD
+            passport.authenticate('local', (err: any, user: any) => {
+                console.log(user);
+                if (!user) return res.status(401).send({
+                    message: 'username or password is incorrect'
                 })
-            }
-            return res.status(200).send({
-                success: true,
-                message: MESSAGES.USER.LOGGEDIN
-            })
+
+                req.login(user, (err) => {
+                    if (err) throw err
+                    res.status(201).send({
+                        success: true,
+                        message: MESSAGES.USER.LOGGEDIN,
+                        user
+                    })
+                })
+            })(req, res, next())
 
         } catch (error) {
             return res.status(500).send({
@@ -105,8 +91,6 @@ class userControllers {
             })
         }
     }
-
-
 
 }
 
