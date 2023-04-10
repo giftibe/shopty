@@ -19,7 +19,9 @@ const MESSAGES = {
         REGISTERED: "Registration successful",
         EMAIL_NOTFOUND: 'Email not found',
         LOGGEDIN:'Logged in successfully',
-        W_PASSWORD: 'Wrong password'
+        W_PASSWORD: 'Wrong password',
+        INCORRECT_DETAILS: 'Invalid credentials',
+        ACCOUNT_NOT_REGISTERED: 'Account not registered'
 
     }
 }

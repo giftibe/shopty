@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import needs from '../../environment'
+import globals from '../../environment'
 
 import session from 'express-session'
 
