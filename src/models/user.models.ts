@@ -1,5 +1,8 @@
 import { Schema, model } from 'mongoose';
 import { ENUM } from '../configs/constant.configs'
+import bcrypt from 'bcrypt';
+const ROUNDS = +process.env.SALT_ROUNDS!
+import IUser from '../interfaces/user.interfaces';
 
 const userSchema = new Schema({
     email: {
@@ -53,6 +56,22 @@ const userSchema = new Schema({
 
 }, { timestamps: true })
 
+userSchema.pre('save', async function (this, next: Function) {
+    if (!this.isModified('password')) {
+        next();
+    }
+    const salt = await bcrypt.genSalt(ROUNDS)
+    this.password = await bcrypt.hash(this.password, salt)
 
-const User = model('user', userSchema);
+})
+userSchema.methods.comparePassword = async function (enteredPassword: string) {
+    const user = await User.findOne({
+        username: this.username
+    }).select('password')
+    return await bcrypt.compare(enteredPassword, user!.password)
+}
+
+
+// userSchema.plugin(passportLocalMongoose);
+const User = model<IUser>('user', userSchema);
 export default User

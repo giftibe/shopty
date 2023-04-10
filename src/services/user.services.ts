@@ -20,7 +20,6 @@ export default class UserServices {
             { username: username, isDeleted: false },
         );
         return __username
-
     }
 
     //update a username for users
