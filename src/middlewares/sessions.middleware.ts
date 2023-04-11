@@ -8,10 +8,12 @@ const sessionMiddleware = (req: Request, res: Response, next: NextFunction) => {
     return session({
         secret: process.env.SESSION_KEY,
         resave: false,
-        saveUninitialized: false, 
-        // cookie: { secure: true } //set true in production
-
-        store:MongoStore.create({
+        saveUninitialized: false,
+        cookie: {
+            // secure: true, //set true in production
+            maxAge: 86400000 // 24 hours in milliseconds
+        },
+        store: MongoStore.create({
             mongoUrl: process.env.DATABASE_URI
 
         })

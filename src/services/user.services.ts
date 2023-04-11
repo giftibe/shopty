@@ -4,6 +4,7 @@ import IUser from '../interfaces/user.interfaces';
 export default class UserServices {
     //create account
     async registerUser(data: Partial<IUser>) {
+        console.log(await User.create(data));
         return await User.create(data);
     }
 
@@ -16,10 +17,9 @@ export default class UserServices {
 
     //find a userName
     async findUserName(username: string) {
-        const __username = await User.findOne(
+        return await User.findOne(
             { username: username, isDeleted: false },
         );
-        return __username
     }
 
     //update a username for users
