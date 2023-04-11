@@ -14,27 +14,30 @@ const {
 
 
 class userControllers {
-    async registerUser(req: Request, res: Response) {
+    async registerAUser(req: Request, res: Response) {
         try {
             //find if email exists
+            const { username } = req.body
             const getEmail = await findEmail(req.body.email)
             if (getEmail) {
                 return res.status(409).send(
                     {
                         success: true,
-                        message: MESSAGES.USER.DUPLICATE_EMAIL
+                        message: MESSAGES.USER.DUPLICATE_EMAIL + "here 1"
                     })
             }
 
             //check if userName exist
-            const getUserName = await findUserName(req.body.username)
-            if (getUserName) {
-                return res.status(409).send(
-                    {
-                        success: false,
-                        message: MESSAGES.USER.DUPLICATE_USERNAME
-                    })
-            }
+            if (req.body.username) {
+                const getUserName = await findUserName(req.body.username)
+                if (getUserName) {
+                    return res.status(409).send(
+                        {
+                            success: false,
+                            message: MESSAGES.USER.DUPLICATE_USERNAME + "here 2"
+                        })
+                }
+            }            
 
             const avatar = generateRandomAvatar(req.body.email);
             let strAvatar = (await avatar).toString();
@@ -46,18 +49,29 @@ class userControllers {
                 imageTag: _imageTag,
                 ...req.body
             })
+
+            console.log(newUser);
+
             return res.status(200).send({
                 success: true,
                 message: MESSAGES.USER.CREATED,
                 newUser
             })
 
+
+
         }
-        catch (error) {
-            return res.status(500).send({
-                success: false,
-                message: MESSAGES.USER.ERROR + error
-            })
+        catch (error: any) {
+            if (error.code === 11000) {
+                return res.status(409).send({
+                    success: false,
+                    message: "Duplicate email or username"
+                });
+            } else
+                return res.status(500).send({
+                    success: false,
+                    message: MESSAGES.USER.ERROR + error
+                })
         }
     }
 
@@ -89,7 +103,6 @@ class userControllers {
                     res.status(201).send({
                         success: true,
                         message: MESSAGES.USER.LOGGEDIN,
-                        user
                     })
                 })
             })(req, res, next)
@@ -104,14 +117,24 @@ class userControllers {
 
     async findAUsername(req: Request, res: Response) {
         if (req.isAuthenticated()) {
-            return res.send({
-                success: true,
-                sessionId: req.sessionID,
-                user: req.user,
-                message: MESSAGES.USER.LOGGEDIN
-            })
+
+            const { username } = req.body
+            const getUsername = await findUserName(username)
+
+            if (getUsername) {
+                return res.send({
+                    success: true,
+                    user: getUsername,
+                    message: ' MESSAGES.USER.USER_FOUND'
+                })
+            } else {
+                return res.send({
+                    success: false,
+                    message: ' MESSAGES.USER.USER_!FOUND'
+                })
+            }
         } else {
-            return res.send({
+            return res.status(401).send({
                 success: false,
                 message: MESSAGES.USER.ACCOUNT_NOT_REGISTERED
             })
@@ -136,10 +159,9 @@ class userControllers {
                             })
                         }
                     })
-
                 });
-
-            } else {
+            }
+            else {
                 return res.status(407).send({
                     success: false,
                     message: MESSAGES.USER.REGISTERED

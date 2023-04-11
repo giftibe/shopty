@@ -57,13 +57,13 @@ const userSchema = new Schema({
 }, { timestamps: true })
 
 userSchema.pre('save', async function (this, next: Function) {
-    if (!this.isModified('password')) {
+    if (!this.isModified('password') || this.isNew) {
         next();
     }
     const salt = await bcrypt.genSalt(ROUNDS)
     this.password = await bcrypt.hash(this.password, salt)
-
 })
+
 userSchema.methods.comparePassword = async function (enteredPassword: string) {
     const user = await User.findOne({
         username: this.username
@@ -72,6 +72,5 @@ userSchema.methods.comparePassword = async function (enteredPassword: string) {
 }
 
 
-// userSchema.plugin(passportLocalMongoose);
 const User = model<IUser>('user', userSchema);
 export default User
