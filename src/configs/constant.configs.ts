@@ -21,7 +21,8 @@ const MESSAGES = {
         LOGGEDIN:'Logged in successfully',
         W_PASSWORD: 'Wrong password',
         INCORRECT_DETAILS: 'Invalid credentials',
-        ACCOUNT_NOT_REGISTERED: 'Account not registered'
+        ACCOUNT_NOT_REGISTERED: 'Account not registered',
+        LOGGEDOUT:'successfully loggedout'
 
     }
 }

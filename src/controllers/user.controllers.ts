@@ -41,7 +41,11 @@ class userControllers {
             let _imageTag = `<img src="${strAvatar}" alt="A representation of the user as an avatar using the email.">`;
 
 
-            const newUser = await registerUser(req.body)
+            const newUser = await registerUser({
+                avatarURL: strAvatar,
+                imageTag: _imageTag,
+                ...req.body
+            })
             return res.status(200).send({
                 success: true,
                 message: MESSAGES.USER.CREATED,
@@ -78,7 +82,9 @@ class userControllers {
 
                 req.login(user, (err) => {
                     if (err) {
-                        throw err
+                        return res.send({
+                            message: `an error occured ${err}`
+                        })
                     }
                     res.status(201).send({
                         success: true,
@@ -93,6 +99,58 @@ class userControllers {
                 success: false,
                 message: MESSAGES.USER.ERROR + error
             })
+        }
+    }
+
+    async findAUsername(req: Request, res: Response) {
+        if (req.isAuthenticated()) {
+            return res.send({
+                success: true,
+                sessionId: req.sessionID,
+                user: req.user,
+                message: MESSAGES.USER.LOGGEDIN
+            })
+        } else {
+            return res.send({
+                success: false,
+                message: MESSAGES.USER.ACCOUNT_NOT_REGISTERED
+            })
+        }
+    }
+
+    async logoutUser(req: Request, res: Response, next: NextFunction) {
+        try {
+            if (req.isAuthenticated()) {
+                req.logout(function (err) {
+                    if (err) {
+                        return next(err);
+                    }
+                    req.session.destroy(function (err) {
+                        if (err) {
+                            return next(err);
+                        } else {
+                            res.clearCookie('connect.sid')
+                            return res.status(204).send({
+                                success: true,
+                                message: MESSAGES.USER.LOGGEDOUT
+                            })
+                        }
+                    })
+
+                });
+
+            } else {
+                return res.status(407).send({
+                    success: false,
+                    message: MESSAGES.USER.REGISTERED
+                })
+            }
+        } catch (err) {
+            // Handle any errors that occur during log out
+            return res.status(500).send({
+                success: false,
+                message: err
+            });
         }
     }
 
