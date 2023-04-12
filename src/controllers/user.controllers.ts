@@ -49,9 +49,6 @@ class userControllers {
                 imageTag: _imageTag,
                 ...req.body
             })
-
-            console.log(newUser);
-
             return res.status(200).send({
                 success: true,
                 message: MESSAGES.USER.CREATED,
@@ -65,7 +62,7 @@ class userControllers {
             if (error.code === 11000) {
                 return res.status(409).send({
                     success: false,
-                    message: "Duplicate email or username"
+                    message: "Duplicate email or username " + error
                 });
             } else
                 return res.status(500).send({

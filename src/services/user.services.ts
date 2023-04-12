@@ -4,7 +4,6 @@ import IUser from '../interfaces/user.interfaces';
 export default class UserServices {
     //create account
     async registerUser(data: Partial<IUser>) {
-        console.log(await User.create(data));
         return await User.create(data);
     }
 

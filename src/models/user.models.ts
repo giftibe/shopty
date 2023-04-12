@@ -57,7 +57,7 @@ const userSchema = new Schema({
 }, { timestamps: true })
 
 userSchema.pre('save', async function (this, next: Function) {
-    if (!this.isModified('password') || this.isNew) {
+    if (!this.isModified('password')) {
         next();
     }
     const salt = await bcrypt.genSalt(ROUNDS)
