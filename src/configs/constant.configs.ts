@@ -22,7 +22,9 @@ const MESSAGES = {
         W_PASSWORD: 'Wrong password',
         INCORRECT_DETAILS: 'Invalid credentials',
         ACCOUNT_NOT_REGISTERED: 'Account not registered',
-        LOGGEDOUT:'successfully loggedout'
+        LOGGEDOUT:'successfully loggedout',
+        ACCOUNT_DELETED:'Account deleted',
+        NOT_ACCOUNT_DELETED: 'Unable to delete another user account',
 
     }
 }

@@ -23,7 +23,7 @@ class userControllers {
                 return res.status(409).send(
                     {
                         success: true,
-                        message: MESSAGES.USER.DUPLICATE_EMAIL + "here 1"
+                        message: MESSAGES.USER.DUPLICATE_EMAIL
                     })
             }
 
@@ -34,10 +34,10 @@ class userControllers {
                     return res.status(409).send(
                         {
                             success: false,
-                            message: MESSAGES.USER.DUPLICATE_USERNAME + "here 2"
+                            message: MESSAGES.USER.DUPLICATE_USERNAME
                         })
                 }
-            }            
+            }
 
             const avatar = generateRandomAvatar(req.body.email);
             let strAvatar = (await avatar).toString();
@@ -114,7 +114,6 @@ class userControllers {
 
     async findAUsername(req: Request, res: Response) {
         if (req.isAuthenticated()) {
-
             const { username } = req.body
             const getUsername = await findUserName(username)
 
@@ -137,6 +136,59 @@ class userControllers {
             })
         }
     }
+
+    //deleting an account
+    async deleteAccount(req: Request, res: Response) {
+        try {
+            //check if authenticated
+            if (!req.isAuthenticated) {
+                return res.status(401).send({
+                    success: false,
+                    message: MESSAGES.USER.ACCOUNT_NOT_REGISTERED
+                })
+            }
+            const userMail = await findEmail(req.body.email)
+
+            //check the user acount to delete exists
+            if (!userMail)
+                return res.status(404).send({
+                    success: false,
+                    message: MESSAGES.USER.ACCOUNT_NOT_REGISTERED
+                })
+
+            // check if the requesting user is an admin
+            const user = (req.user as Partial<IUser>);
+            if (user.role == 'admin') {
+                await deleteUser(req.body.email)
+                return res.status(204).send({
+                    success: true,
+                    message: MESSAGES.USER.ACCOUNT_DELETED
+                })
+            } else {
+
+                // check if the requesting user is deleting their account
+                if (user.email == userMail.email) {
+                    await deleteUser(req.body.email)
+                    return res.status(200).send({
+                        success: true,
+                        message: MESSAGES.USER.ACCOUNT_DELETED
+                    })
+                } else {
+                    return res.status(409).send({
+                        success: true,
+                        message: MESSAGES.USER.NOT_ACCOUNT_DELETED
+                    })
+                }
+            }
+        }
+        catch (error) {
+            return res.status(500).send({
+                success: false,
+                message: error
+            });
+        }
+    }
+
 
     async logoutUser(req: Request, res: Response, next: NextFunction) {
         try {
