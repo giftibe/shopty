@@ -36,5 +36,10 @@ export default class productService {
             { seller, isDeleted: false })
             .sort({ createdAt: -1 });
     }
+
+    //find all product
+    async findAllProducts() {
+        return await Product.find({isDeleted: false})
+    }
 }
 

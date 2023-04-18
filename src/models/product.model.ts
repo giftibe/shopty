@@ -6,12 +6,14 @@ const productSchema = new Schema({
         trim: true,
         maxLength: 20,
         minlength: 2,
+        lowercase: true,
         required: true
     },
 
     seller: {
         identity: Schema.Types.ObjectId,
         ref: 'User',
+        required: true
     },
 
     quantity: {
