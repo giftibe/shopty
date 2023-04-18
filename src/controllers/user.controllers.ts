@@ -175,7 +175,7 @@ class userControllers {
                     })
                 } else {
                     return res.status(409).send({
-                        success: true,
+                        success: false,
                         message: MESSAGES.USER.NOT_ACCOUNT_DELETED
                     })
                 }
@@ -189,6 +189,47 @@ class userControllers {
         }
     }
 
+
+    //update users
+    async updateAccount(req: Request, res: Response) {
+        try {
+            if (!req.isAuthenticated) {
+                return res.status(401).send({
+                    success: false,
+                    message: MESSAGES.USER.ACCOUNT_NOT_REGISTERED
+                })
+            }
+            const searchUser = await findEmail(req.body.email)
+
+            //check the user acount to be updated exists
+            if (!searchUser)
+                return res.status(404).send({
+                    success: false,
+                    message: MESSAGES.USER.ACCOUNT_NOT_REGISTERED
+                })
+
+            const user = (req.user as Partial<IUser>);
+            if (user.email == searchUser.email) {
+                await updateUser(searchUser.id, req.body)
+                return res.status(200).send({
+                    success: true,
+                    message: MESSAGES.USER.ACCOUNT_UPDATED
+                })
+            } else {
+                return res.status(409).send({
+                    success: false,
+                    message: MESSAGES.USER.UNAUTHORIZED
+                })
+            }
+        }
+        catch (error) {
+            return res.status(500).send({
+                success: false,
+                message: error
+            });
+
+        }
+    }
 
     async logoutUser(req: Request, res: Response, next: NextFunction) {
         try {
