@@ -9,16 +9,16 @@ export default class productService {
     }
 
     //delete a product for admins and sellers
-    async deleteProduct(product_name: Partial<IProduct>) {
+    async deleteProduct(id: string) {
         return await Product.findOneAndUpdate(
-            { product_name: product_name, isDeleted: true },
+            { id, isDeleted: false },
             { isDeleted: true })
     }
 
     //update a product for sellers
-    async updateProduct(product_name: Partial<IProduct>, data: Partial<IProduct>) {
+    async updateProduct(id: string, data: Partial<IProduct>) {
         return await Product.findOneAndUpdate(
-            { product_name, isDeleted: false },
+            { id, isDeleted: false },
             data,
             { new: true }).sort({ createdAt: -1 });
     }
@@ -37,9 +37,15 @@ export default class productService {
             .sort({ createdAt: -1 });
     }
 
+    //find product by Id
+    async findProductsById(id: string) {
+        return await Product.find(
+            { id, isDeleted: false })
+    }
+
     //find all product
     async findAllProducts() {
-        return await Product.find({isDeleted: false})
+        return await Product.find({ isDeleted: false })
     }
 }
 

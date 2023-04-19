@@ -35,8 +35,10 @@ const MESSAGES = {
         ADDED: 'Product added successfully',
         UNAUTHORIZED: 'Unauthorized access',
         ERROR: "An error occured",
-        RETRIEVED: 'Product retrieved successfully',
-        NO_ITEM: 'No such product was found'
+        RETRIEVED: 'Products retrieved successfully',
+        NO_ITEM: 'No such product was found',
+        UPDATED: 'Product updated successfully',
+        DELETED: 'Product deleted successfully'
 
     }
 }
