@@ -1,5 +1,10 @@
-import express from 'express';
-const app = express();
-import router from './user.routes';
+import { Router } from 'express';
+const router = Router();
+import userRouter from './user.routes';
+import productRouter from './product.route';
+import categoryRouter from './category.routes'
 
-export default app.use('/v1/users', router)
+router.use('/v1/users', userRouter)
+router.use('/v1/product', productRouter)
+router.use('/v1/category', categoryRouter)
+export default router
