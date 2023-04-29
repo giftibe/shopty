@@ -17,11 +17,6 @@ export default class categoryService {
         return await Category.find()
     }
 
-    //find a Category
-    async findCategory(id: string) {
-        return await Category.findById(id)
-    }
-
     //update a category
     async updateCategory(id: string, data: Partial<ICategory>) {
         return await Category.findByIdAndDelete(id, data)

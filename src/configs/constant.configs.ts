@@ -48,7 +48,8 @@ const MESSAGES = {
         ABSENT: 'Field does not exist',
         DELETED: 'Field was deleted successfully',
         ERROR: 'An error occurred',
-        UPDATED: 'Category updated successfully'
+        UPDATED: 'Category updated successfully',
+        EMPTY: 'No categories was found'
 
 
 

@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import categoryService from "../services/category.services";
-const { addCategory, deleteCategory, getAllCategories, updateCategory, findCategory } = new categoryService();
+const { addCategory, deleteCategory, getAllCategories, updateCategory } = new categoryService();
 import { MESSAGES } from '../configs/constant.configs'
 import Category from "../models/category.model";
-import { idText } from "typescript";
+
 
 
 class categoryController {
@@ -77,6 +77,29 @@ class categoryController {
                 res.status(200).send({
                     status: true,
                     message: MESSAGES.CATEGORY.UPDATED
+                })
+            }
+        } catch (error) {
+            res.status(500).send({
+                success: false,
+                message: MESSAGES.CATEGORY.ERROR + error
+            })
+        }
+    }
+
+
+    async getAllCategory(req: Request, res: Response) {
+        try {
+            const results = await getAllCategories()
+            if (Object.keys(results).length === 0) {
+                res.status(204).send({
+                    success: true,
+                    message: MESSAGES.CATEGORY.EMPTY
+                })
+            } else {
+                res.status(200).send({
+                    success: true,
+                    data: results
                 })
             }
         } catch (error) {
