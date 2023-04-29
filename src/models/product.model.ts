@@ -1,5 +1,4 @@
 import { model, Schema, } from 'mongoose'
-
 const productSchema = new Schema({
     product_name: {
         type: String,
@@ -11,7 +10,7 @@ const productSchema = new Schema({
     },
 
     seller: {
-        identity: Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'User',
         required: true
     },

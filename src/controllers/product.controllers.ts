@@ -3,6 +3,7 @@ import { MESSAGES } from '../configs/constant.configs'
 import IUser from '../interfaces/user.interfaces'
 import IProduct from '../interfaces/product.interface'
 import productService from '../services/product.services'
+import { isValidObjectId } from 'mongoose'
 const {
     createProduct,
     findAllProducts,
@@ -182,9 +183,7 @@ class productController {
                 message: MESSAGES.PRODUCT.ERROR + error
             })
         }
-
     }
-
 }
 
 export default new productController()

@@ -39,8 +39,22 @@ const MESSAGES = {
         NO_ITEM: 'No such product was found',
         UPDATED: 'Product updated successfully',
         DELETED: 'Product deleted successfully'
+    },
+
+    CATEGORY: {
+        UNAUTHORIZED: 'Unauthorized access',
+        CREATED: 'Category created successfully',
+        N_CREATED: 'Category already exists',
+        ABSENT: 'Field does not exist',
+        DELETED: 'Field was deleted successfully',
+        ERROR: 'An error occurred',
+        UPDATED: 'Category updated successfully'
+
+
 
     }
+
+
 }
 
 export { PORT, ENUM, MESSAGES }
