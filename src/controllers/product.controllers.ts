@@ -35,14 +35,12 @@ class productController {
                     message: MESSAGES.PRODUCT.UNAUTHORIZED
                 })
             }
-
             const product = req.body
             await createProduct(product)
             return res.status(200).send({
                 success: true,
                 message: MESSAGES.PRODUCT.ADDED
             })
-
         } catch (error) {
             return res.status(500).send({
                 success: false,
@@ -106,7 +104,6 @@ class productController {
             const update = req.body
             //search for the product to update
             const product = await findProductsById(req.body.id)
-
             if (!product) {
                 return res.status(404).send({
                     success: false,
@@ -125,9 +122,7 @@ class productController {
                 message: MESSAGES.PRODUCT.ERROR + error
             })
         }
-
     }
-
 
     //delete a product
     async deleteProduct(req: Request, res: Response) {
@@ -146,7 +141,6 @@ class productController {
                     message: MESSAGES.PRODUCT.NO_ITEM
                 })
             }
-
             await deleteProduct(id)
             return res.status(204).send({
                 success: true,
@@ -159,7 +153,6 @@ class productController {
             })
         }
     }
-
 
     //view product review
     async viewProductReview(req: Request, res: Response) {
