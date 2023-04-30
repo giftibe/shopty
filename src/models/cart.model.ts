@@ -7,9 +7,6 @@ const cartSchema = new Schema({
         ref: 'Product'
     },
 
-    cart_total_price: {
-        total: Number
-    },
 })
 
 const Cart = model('cart', cartSchema)

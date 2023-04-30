@@ -149,7 +149,7 @@ class userControllers {
             }
             const userMail = await findEmail(req.body.email)
 
-            //check the user acount to delete exists
+            //check the user account to delete exists
             if (!userMail)
                 return res.status(404).send({
                     success: false,
@@ -258,14 +258,12 @@ class userControllers {
                 })
             }
         } catch (err) {
-            // Handle any errors that occur during log out
             return res.status(500).send({
                 success: false,
                 message: err
             });
         }
     }
-
 }
 
 export default new userControllers()

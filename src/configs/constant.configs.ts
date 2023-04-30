@@ -28,7 +28,6 @@ const MESSAGES = {
         ACCOUNT_UPDATED: 'Account updated successfully',
         NOT_UPDATED: 'Account updated unsuccessful',
         UNAUTHORIZED: 'Unauthorized access',
-
     },
 
     PRODUCT: {
@@ -50,11 +49,15 @@ const MESSAGES = {
         ERROR: 'An error occurred',
         UPDATED: 'Category updated successfully',
         EMPTY: 'No categories was found'
+    },
 
-
-
+    CART:{
+        ADDED: 'Item added successfully',
+        ERROR: "An error occured",
+        REMOVED: 'Item removed successfully',
+        ITEMS: 'Items found in your cart',
+        NO_ITEMS: 'No item was found in your cart'
     }
-
 
 }
 

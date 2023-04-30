@@ -4,8 +4,6 @@ const { addCategory, deleteCategory, getAllCategories, updateCategory } = new ca
 import { MESSAGES } from '../configs/constant.configs'
 import Category from "../models/category.model";
 
-
-
 class categoryController {
     //create  categories by only admins
     async createACategory(req: Request, res: Response) {
