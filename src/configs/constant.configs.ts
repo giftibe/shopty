@@ -51,7 +51,7 @@ const MESSAGES = {
         EMPTY: 'No categories was found'
     },
 
-    CART:{
+    CART: {
         ADDED: 'Item added successfully',
         ERROR: "An error occured",
         REMOVED: 'Item removed successfully',
