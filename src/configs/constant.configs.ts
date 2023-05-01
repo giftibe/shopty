@@ -57,6 +57,14 @@ const MESSAGES = {
         REMOVED: 'Item removed successfully',
         ITEMS: 'Items found in your cart',
         NO_ITEMS: 'No item was found in your cart'
+    },
+
+    REVIEW: {
+        SUBMITTED: 'Review successfully submitted',
+        ERROR: 'An error occurred',
+        FETCHED: 'Review fetched successfully',
+        EMPTY: 'No review was found',
+        DELETED: 'Review deleted successfully'
     }
 
 }

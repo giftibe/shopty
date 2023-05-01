@@ -10,10 +10,10 @@ export default class reviewServices {
     }
 
     //see all a products review
-    async fetchaProductReview(id: Partial<IProduct>) {
+    async fetchAProductReview(product_id: Partial<IProduct>) {
         //id is product id, then search for the product with that id
         // then ge the product and zone into the reviews section
-        const _product = await Product.find({ id: id, isDeleted: false }).exec()
+        const _product = await Product.find({ id: product_id, isDeleted: false }).exec()
         return _product
     }
 

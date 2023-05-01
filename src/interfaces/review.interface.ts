@@ -1,3 +1,5 @@
 export default interface IReview{
-    review: string[]
+    reviews: string,
+    author: string,
+    product_id: string
 }

@@ -1,21 +1,28 @@
 import { model, Schema, } from 'mongoose'
 
 const reviewSchema = new Schema({
-    review: [{
-        content: String,
-        trim: true,
+    reviews: {
+        content: {
+            type: String,
+            required: true,
+            unique: true,
+            trim: true,
+        },
+
         author: {
             user: Schema.Types.ObjectId,
             ref: 'User',
         },
-        product: {
+        product_id: {
             order: Schema.Types.ObjectId,
             ref: 'Product'
         },
+
         isDeleted: Boolean,
         default: false
-    }]
-}, { timestamps: true })
+    }
+},
+    { timestamps: true })
 
 const Review = model('review', reviewSchema)
 export default Review
